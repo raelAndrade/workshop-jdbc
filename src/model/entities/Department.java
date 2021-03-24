@@ -8,6 +8,8 @@ public class Department implements Serializable {
     private Integer id;
     private String name;
 
+    private Department department;
+
     public Department() { }
 
     public Department(Integer id, String name) {
@@ -35,8 +37,8 @@ public class Department implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Department that = (Department) o;
-        return id.equals(that.id);
+        Department seller = (Department) o;
+        return id.equals(seller.id);
     }
 
     @Override
@@ -49,6 +51,7 @@ public class Department implements Serializable {
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", department=" + department +
                 '}';
     }
 }

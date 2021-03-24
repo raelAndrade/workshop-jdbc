@@ -8,8 +8,6 @@ public class Department implements Serializable {
     private Integer id;
     private String name;
 
-    private Department department;
-
     public Department() { }
 
     public Department(Integer id, String name) {
@@ -51,7 +49,6 @@ public class Department implements Serializable {
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", department=" + department +
                 '}';
     }
 }

@@ -34,7 +34,6 @@ public class Program {
         Statement st = null;
         ResultSet rs = null;
         try {
-            conn = DB.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery("select * from department");
             while (rs.next()){
@@ -53,7 +52,6 @@ public class Program {
         PreparedStatement st = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            conn = DB.getConnection();
             st = conn.prepareStatement(
                     "insert into seller " +
                             "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
@@ -75,7 +73,6 @@ public class Program {
         PreparedStatement st = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            conn = DB.getConnection();
             st = conn.prepareStatement("insert into department (Name) values ('D1'),('D2')",
                     Statement.RETURN_GENERATED_KEYS);
 
@@ -101,7 +98,6 @@ public class Program {
     private static void atualizarDados(Connection conn){
         PreparedStatement st = null;
         try {
-            conn = DB.getConnection();
             st = conn.prepareStatement("update seller set BaseSalary = BaseSalary + ? where (DepartmentId = ?)");
             st.setDouble(1, 200.0);
             st.setInt(2, 2);
@@ -120,7 +116,6 @@ public class Program {
     private static void deletarDados(Connection conn){
         PreparedStatement st = null;
         try {
-            conn = DB.getConnection();
             st = conn.prepareStatement("delete from department where Id = ?");
             st.setInt(1, 2);
             int rowsAffected = st.executeUpdate();

@@ -28,6 +28,9 @@ public class Program {
         // Deletar dados
         // deletarDados(conn);
 
+        // Transações
+        // transacoes(conn);
+
     }
 
     private static void recuperarDados(Connection conn){
@@ -122,6 +125,39 @@ public class Program {
             System.out.println("Done! Rows affected: " + rowsAffected);
         } catch (SQLException e){
             throw new DbIntegrityException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeConnection();
+        }
+    }
+
+    private static void transacoes(Connection conn){
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+
+            conn.setAutoCommit(false);
+
+            int rows1 = st.executeUpdate("update seller set BaseSalary = 2090 where DepartmentId = 1");
+
+            // int x = 1;
+            // if(x < 2){
+            //     throw new SQLException("Fake error");
+            // }
+
+            int rows2 = st.executeUpdate("update seller set BaseSalary = 3090 where DepartmentId = 2");
+
+            conn.commit();
+
+            System.out.println("Rows1: " + rows1);
+            System.out.println("Rows2: " + rows2);
+        } catch (SQLException e){
+            try {
+                conn.rollback();
+                throw  new DbException("Transaction rolled back! Caused by: " + e.getMessage());
+            } catch (SQLException e1) {
+                throw  new DbException("Error trying to rollback! Caused by: " + e.getMessage());
+            }
         } finally {
             DB.closeStatement(st);
             DB.closeConnection();

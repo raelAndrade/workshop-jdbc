@@ -13,13 +13,16 @@ public class Program {
         Connection conn = DB.getConnection();
 
         // Recuperar dados
-        recuperarDados(conn);
+        // recuperarDados(conn);
 
         // Inserir único dados
-        inserirUnicoDados(conn);
+        // inserirUnicoDados(conn);
 
         // Inserir vários dados
-        inserirVariosDados(conn);
+        // inserirVariosDados(conn);
+
+        // Atualizar dados
+        atualizarDados(conn);
 
     }
 
@@ -88,6 +91,25 @@ public class Program {
         } finally {
             DB.closeStatement(st);
             DB.getConnection();
+        }
+    }
+
+    public static void atualizarDados(Connection conn){
+        PreparedStatement st = null;
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement("update seller set BaseSalary = BaseSalary + ? where (DepartmentId = ?)");
+            st.setDouble(1, 200.0);
+            st.setInt(2, 2);
+
+            int rowsAffected = st.executeUpdate();
+
+            System.out.println("Done! Rows affected: " + rowsAffected);
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            DB.closeStatement(st);
+            DB.closeConnection();
         }
     }
 }

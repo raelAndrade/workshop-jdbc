@@ -2,6 +2,7 @@ package application;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -22,11 +23,14 @@ public class Program {
         // inserirVariosDados(conn);
 
         // Atualizar dados
-        atualizarDados(conn);
+        // atualizarDados(conn);
+
+        // Deletar dados
+        // deletarDados(conn);
 
     }
 
-    public static void recuperarDados(Connection conn){
+    private static void recuperarDados(Connection conn){
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -45,7 +49,7 @@ public class Program {
         }
     }
 
-    public static void inserirUnicoDados(Connection conn){
+    private static void inserirUnicoDados(Connection conn){
         PreparedStatement st = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -67,7 +71,7 @@ public class Program {
         }
     }
 
-    public static void inserirVariosDados(Connection conn) {
+    private static void inserirVariosDados(Connection conn) {
         PreparedStatement st = null;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -94,7 +98,7 @@ public class Program {
         }
     }
 
-    public static void atualizarDados(Connection conn){
+    private static void atualizarDados(Connection conn){
         PreparedStatement st = null;
         try {
             conn = DB.getConnection();
@@ -107,6 +111,22 @@ public class Program {
             System.out.println("Done! Rows affected: " + rowsAffected);
         } catch (SQLException e){
             e.printStackTrace();
+        } finally {
+            DB.closeStatement(st);
+            DB.closeConnection();
+        }
+    }
+
+    private static void deletarDados(Connection conn){
+        PreparedStatement st = null;
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement("delete from department where Id = ?");
+            st.setInt(1, 2);
+            int rowsAffected = st.executeUpdate();
+            System.out.println("Done! Rows affected: " + rowsAffected);
+        } catch (SQLException e){
+            throw new DbIntegrityException(e.getMessage());
         } finally {
             DB.closeStatement(st);
             DB.closeConnection();
